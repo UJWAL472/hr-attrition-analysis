@@ -31,7 +31,7 @@ to identify the strongest drivers of attrition and recommend specific actions.
 - The **[Sales]** department has the highest attrition rate at **20.6%**.
 - Employees in their first 0-2 years have a **29.8%** attrition rate, the
   highest of any tenure group.
-- Job satisfaction score of 1 (lowest) corresponds to a **228%** attrition
+- Job satisfaction score of 1 (lowest) corresponds to a **22.8%** attrition
   rate, vs **11.3%** for score 4 (highest).
 - The logistic regression identified **OverTime**, **EnvironmentSatisfaction**, and
   **WorkLifeBalance** as the strongest predictors of attrition.
