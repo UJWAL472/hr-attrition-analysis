@@ -25,16 +25,16 @@ to identify the strongest drivers of attrition and recommend specific actions.
 
 ## Key Findings
 *(Fill these in with your actual numbers after running analysis.py)*
-- Overall attrition rate is **__%**.
-- Employees working overtime have an attrition rate of **__%**, compared to
-  **__%** for those who don't - the single largest gap found.
-- The **[Department]** department has the highest attrition rate at **__%**.
-- Employees in their first 0-2 years have a **__%** attrition rate, the
+- Overall attrition rate is **16.122449%**.
+- Employees working overtime have an attrition rate of **30.5%**, compared to
+  **10.4%** for those who don't - the single largest gap found.
+- The **[Sales]** department has the highest attrition rate at **20.6%**.
+- Employees in their first 0-2 years have a **29.8%** attrition rate, the
   highest of any tenure group.
-- Job satisfaction score of 1 (lowest) corresponds to a **__%** attrition
-  rate, vs **__%** for score 4 (highest).
-- The logistic regression identified **OverTime**, **JobSatisfaction**, and
-  **YearsAtCompany** as the strongest predictors of attrition.
+- Job satisfaction score of 1 (lowest) corresponds to a **228%** attrition
+  rate, vs **11.3%** for score 4 (highest).
+- The logistic regression identified **OverTime**, **EnvironmentSatisfaction**, and
+  **WorkLifeBalance** as the strongest predictors of attrition.
 
 ## Dashboard
 ![Dashboard Screenshot](dashboard_screenshot.png)
