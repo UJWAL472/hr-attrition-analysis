@@ -1,8 +1,3 @@
-# =====================================================
-# HR Attrition Analysis - Python Script
-# Dataset: IBM HR Analytics Employee Attrition (Kaggle)
-# Place "HR_Attrition.csv" in the same folder as this script
-# =====================================================
 
 import pandas as pd
 import numpy as np
@@ -15,9 +10,6 @@ from sklearn.metrics import classification_report
 
 sns.set_style("whitegrid")
 
-# -----------------------------------------------------
-# 1. Load and inspect the data
-# -----------------------------------------------------
 df = pd.read_csv("HR_Attrition.csv")
 
 print("Shape of dataset:", df.shape)
@@ -30,11 +22,6 @@ print(df.isnull().sum().sum(), "total missing values")
 print("\nAttrition breakdown:")
 print(df["Attrition"].value_counts(normalize=True) * 100)
 
-
-# -----------------------------------------------------
-# 2. Feature engineering
-# -----------------------------------------------------
-# Tenure groups
 def tenure_group(years):
     if years <= 2:
         return "0-2"
@@ -47,16 +34,11 @@ def tenure_group(years):
 
 df["TenureGroup"] = df["YearsAtCompany"].apply(tenure_group)
 
-# Salary bands (quartiles)
 df["SalaryBand"] = pd.qcut(df["MonthlyIncome"], 4, labels=["Low", "Medium", "High", "Very High"])
 
-# Binary attrition flag for correlation/modeling
 df["AttritionFlag"] = df["Attrition"].map({"Yes": 1, "No": 0})
 
 
-# -----------------------------------------------------
-# 3. Key summary stats (mirrors the SQL queries)
-# -----------------------------------------------------
 print("\n--- Attrition rate by Department ---")
 print(df.groupby("Department")["AttritionFlag"].mean().round(3) * 100)
 
@@ -69,21 +51,11 @@ print(df.groupby("TenureGroup")["AttritionFlag"].mean().round(3) * 100)
 print("\n--- Attrition rate by Job Satisfaction ---")
 print(df.groupby("JobSatisfaction")["AttritionFlag"].mean().round(3) * 100)
 
-
-# -----------------------------------------------------
-# 4. Correlation with numeric features
-# -----------------------------------------------------
 numeric_cols = df.select_dtypes(include=np.number).columns
 corr = df[numeric_cols].corr()["AttritionFlag"].sort_values(ascending=False)
 print("\n--- Correlation with Attrition (numeric features) ---")
 print(corr)
 
-
-# -----------------------------------------------------
-# 5. Charts
-# -----------------------------------------------------
-
-# Chart 1: Attrition rate by department
 plt.figure(figsize=(7, 4))
 dept_attrition = df.groupby("Department")["AttritionFlag"].mean() * 100
 dept_attrition.sort_values(ascending=False).plot(kind="bar", color="#4C72B0")
@@ -95,7 +67,6 @@ plt.tight_layout()
 plt.savefig("chart_attrition_by_department.png", dpi=150)
 plt.close()
 
-# Chart 2: Attrition by overtime
 plt.figure(figsize=(5, 4))
 overtime_attrition = df.groupby("OverTime")["AttritionFlag"].mean() * 100
 overtime_attrition.plot(kind="bar", color="#DD8452")
@@ -107,7 +78,6 @@ plt.tight_layout()
 plt.savefig("chart_attrition_by_overtime.png", dpi=150)
 plt.close()
 
-# Chart 3: Tenure distribution for leavers vs stayers
 plt.figure(figsize=(7, 4))
 sns.histplot(data=df, x="YearsAtCompany", hue="Attrition", multiple="stack", bins=15)
 plt.title("Years at Company: Leavers vs Stayers")
@@ -119,9 +89,6 @@ print("\nCharts saved: chart_attrition_by_department.png, "
       "chart_attrition_by_overtime.png, chart_tenure_distribution.png")
 
 
-# -----------------------------------------------------
-# 6. Logistic regression - what predicts attrition?
-# -----------------------------------------------------
 features = [
     "Age", "MonthlyIncome", "YearsAtCompany", "JobSatisfaction",
     "DistanceFromHome", "WorkLifeBalance", "OverTime",
@@ -130,7 +97,6 @@ features = [
 
 model_df = df[features + ["AttritionFlag"]].copy()
 
-# Encode OverTime (Yes/No) as 1/0
 le = LabelEncoder()
 model_df["OverTime"] = le.fit_transform(model_df["OverTime"])  # No=0, Yes=1
 
@@ -148,7 +114,6 @@ y_pred = clf.predict(X_test)
 print("\n--- Logistic Regression Performance ---")
 print(classification_report(y_test, y_pred))
 
-# Coefficients = relative importance/direction of each feature
 coef_df = pd.DataFrame({
     "feature": features,
     "coefficient": clf.coef_[0]
@@ -157,10 +122,6 @@ coef_df = pd.DataFrame({
 print("\n--- Feature Coefficients (higher = stronger link to leaving) ---")
 print(coef_df)
 
-
-# -----------------------------------------------------
-# 7. Save cleaned dataset for use in Power BI / Tableau
-# -----------------------------------------------------
 df.to_csv("HR_Attrition_cleaned.csv", index=False)
 print("\nCleaned dataset saved as HR_Attrition_cleaned.csv")
 print("\nDone! Use the printed numbers above to write your README findings.")
